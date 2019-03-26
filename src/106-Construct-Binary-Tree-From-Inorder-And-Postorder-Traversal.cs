@@ -56,3 +56,54 @@ public class Solution {
         return root;        
     }
 }
+
+// Second edition
+// Runtime: 96 ms
+// Memory Usage: 24.8 MB
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode BuildTree(int[] inorder, int[] postorder) {
+        
+        if(inorder.Length == 0 
+          || postorder.Length == 0
+          || inorder.Length != postorder.Length) return null;
+        
+        int len = inorder.Length;
+        Dictionary<int,int> inList = new Dictionary<int,int>();
+        for(int i = 0; i<len; i++)
+        {
+            inList.Add(inorder[i],i);            
+        }
+        
+        TreeNode root = RecursiveBuildTree(inorder,0,len-1,postorder,0,len-1,inList);
+        return root;        
+    }
+    
+    private TreeNode RecursiveBuildTree(int[] inorder, int iStart, int iEnd,
+                                       int[] postorder, int pStart, int pEnd,
+                                       Dictionary<int,int> inList)
+    {
+        if(iStart>iEnd || pStart>pEnd) return null;
+        
+        TreeNode root = new TreeNode(postorder[pEnd]);
+        int rootIndex = inList[root.val];
+        
+        root.left = RecursiveBuildTree(inorder, iStart, rootIndex - 1,
+                                    postorder, pStart, pStart + (rootIndex - 1 - iStart),
+                                    inList);
+
+        root.right = RecursiveBuildTree(inorder, rootIndex + 1, iEnd,
+                                    postorder, pStart + rootIndex - iStart, pEnd - 1,
+                                    inList);
+        
+        return root;
+    }
+}
