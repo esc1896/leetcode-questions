@@ -46,3 +46,40 @@ public class Solution {
         return rst;
     }
 }
+
+// Second edition
+// Runtime: 112 ms
+// Memory Usage: 26.3 MB
+public class Solution {
+    public int NumUniqueEmails(string[] emails)
+    {
+        int rst = 0;
+        int emailCnt = emails.Length;
+
+        Dictionary<string, int> uniEmails = new Dictionary<string, int>();
+        for (int i = 0; i < emailCnt; i++)
+        {            
+            int len = emails[i].Length;
+            int atIndex = emails[i].IndexOf('@');
+
+            string local = emails[i].Substring(0, atIndex);
+            string domain = emails[i].Substring(atIndex + 1, len - atIndex - 1);
+
+            local = local.Replace(".","");
+            
+            int plusIndex = local.IndexOf('+');
+            if(plusIndex >= 0)
+            {
+                local = local.Substring(0, plusIndex);                           
+            }            
+
+            string str = local + "@" + domain;
+            if (!uniEmails.Keys.Contains(str))
+                uniEmails.Add(str, 0);
+        }
+
+        rst = uniEmails.Count;
+        return rst;
+    }
+}
+
