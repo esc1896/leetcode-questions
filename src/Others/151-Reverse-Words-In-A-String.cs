@@ -30,3 +30,15 @@ public class Solution {
         return String.Join(" ", rstList).Trim();        
     }
 }
+
+// 2020/07/15
+public class Solution {
+    public string ReverseWords(string s) {
+        
+        if(String.IsNullOrEmpty(s)) return s;
+        
+        var list = s.Split(' ');
+        Array.Reverse(list);
+        return String.Join(' ', list.Where(x => !String.IsNullOrWhiteSpace(x)));
+    }
+}
